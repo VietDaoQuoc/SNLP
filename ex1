@@ -1,0 +1,70 @@
+Answer:
++ Glove:
+    1. Since we have the assumption that F is a homomorphism then have have:
+    $$F(A+B) = F(A)*F(B)$$ 
+    <br/>
+    
+    Apply the function above to left side of Eqn.3:
+    $$F(w^T_{i}.\tilde{w}_{k} - w^T_{j}.\tilde{w}_{k})$$
+    $$= F(w^T_{i}.\tilde{w}_{k})* F(-w^T_{j}.\tilde{w}_{k})$$
+    $$= \frac{F(w^T_{i}.\tilde{w}_{k})}{F(w^T_{j}.\tilde{w}_{k})}$$
+    $$F(w^T_{i}.\tilde{w}_{k} - w^T_{j}.\tilde{w}_{k}) = \frac{F(w^T_{i}.\tilde{w}_{k})}{F(w^T_{j}.\tilde{w}_{k})} = \frac{P_{ik}}{P_{jk}}$$
+    Then implies:
+    $$F(w^T_{i}.\tilde{w}_{k}) = P_{ik}$$ 
+    and 
+    $$F(w^T_{j}.\tilde{w}_{k}) = P_{jk} $$
+    
+    <br/>
+
+    It is mentioned that the approximation introduced by Equation 5 may not hold perfectly in
+    practice.The authors contend that the performance of the algorithm is not materially
+    affected by the gap between the approximation and the actual goal function. This is
+    because GloVe's optimisation method modifies word representations depending on the
+    corpus's overall statistics, making it resistant to modest approximation-related errors.
+    
+    2. With the expression in the Eqn.6, it becomes undefined when: $$X_{ij} = 0$$ But the paper later use Laplace smoothing technique but this results in the equal weightage of all word occurrences => weighted Least Square loss function. GloVe uses this smoothing function to mitigate the impact of very frequent words on the
+    learning process. GloVe reduces the influence of these highly frequent words which
+    could occur mostly in large corpora where certain words tend to co-occur in almost all
+    contexts,by still considering their co-occurrence information.
+    Through the weighted least squares regression model (Equation 4) used to approximate
+    the logarithm of the co-occurrence ratios, the smoothing function interacts with the loss
+    objective in GloVe. The smoothing function is applied to the co-occurrence counts,
+    modifying the weights used in the regression in this equation.
+    
+    <br/>
+
+    3. By adding a factor to the objective that penalises the squared Euclidean distance
+    between the learned embedding, wi=wi+wi, and an existing one, ri, the GloVe loss
+    function is here extended into a retrofitting model:
+    $$J_{Mittens} = J + u* \sum(w_{i} - r_{i})^2 $$ 
+    <br/>
+    
+    This term encourages word vectors to be sparse and have a greater number of zero
+    elements, which results in more comprehensible and compact representations.
+    The "Mittens" concept presents various implications and potential advantages as a result
+    of these additions:
+    Mittens selectively evaluates context words based on relatedness measurements in
+    order to learn word representations that are specialised to a particular area. When
+    dealing with tasks or data that are specialised to a certain domain and where it's crucial
+    to record accurate semantic relationships.
+
++ Word2Vec: <br/>
+    1. <br/>
+        - Continuous Bag-of-Words (CBOW): The CBOW model aims to predict the target word based on its context. It treats the context words surrounding the target word as the input and tries to predict the target word itself. The context words are typically defined as a fixed-size window of words before and after the target word in a given text corpus. <br/>
+        - Skip-gram: The Skip-gram model, on the other hand, takes a target word as input and aims to predict the context words that are likely to appear around it. It flips the perspective of the CBOW model. Given a target word, the Skip-gram model tries to maximize the likelihood of generating the context words within a certain window around the target word. <br/>
+    
+    2. Because there is a path to each node and the leaves are represented with its probability. Then we have the run time to a specific node is the perflexity of the unigrams from each node until the node we are looking for. The claim that only log2(Unigram_perplexity(V)) evaluations are needed in the hierarchical softmax of word2vec is because the Huffman binary tree efficiently represents the word probabilities. The tree structure assigns shorter codes to more frequent words, reducing the average code length. As a result, the number of evaluations required is proportional to the average code length, which is logarithmically related to the unigram perplexity (a measure of word frequency distribution) of the vocabulary. Hence, the claim states that log2(Unigram_perplexity(V)) evaluations are sufficient to compute the probabilities, making the process more computationally efficient than evaluating all words individually. <br/>
+
+    3. The idea of negative sampling is to first get hold of positive samples and negative samples from the dataset given a specific center word. With this approach we can avoid back-propagating into a huge matrix at each window iteration which leads to a huge amount of computation. <br/>
+
+    4. The distributional hypothesis, which postulates that words with similar meanings tend to
+    have similar contexts, is supported by both word2vec and PMI techniques. Word2vec builds
+    distributed representations that capture comparable contextual patterns for words, whereas PMI
+    determines the strength of association between words based on their shared contexts. Both
+    strategies attempt to extract and vectorize semantic information by taking into account word
+    co-occurrence patterns.
+    The research hypothesises a relationship between the PMI shifted by a constant and the
+    word-context matrix product in word2vec. This link suggests that the contextual information in
+    the PMI values is captured by the word embeddings learnt by word2vec. It suggests that
+    word2vec effectively decomposes the PMI matrix into word and context embeddings, performing
+    a type of implicit matrix factorization.
